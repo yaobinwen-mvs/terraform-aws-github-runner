@@ -216,7 +216,7 @@ variable "runner_boot_time_in_minutes" {
 
 variable "runner_labels" {
   description = "All the labels for the runners (GitHub) including the default one's(e.g: self-hosted, linux, x64, label1, label2). Separate each label by a comma"
-  type        = string
+  type        = list(string)
 }
 
 variable "runner_group_name" {
