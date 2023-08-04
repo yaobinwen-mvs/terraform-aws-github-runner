@@ -43,6 +43,7 @@ resource "aws_lambda_function" "scale_up" {
       SSM_TOKEN_PATH                       = "${var.ssm_paths.root}/${var.ssm_paths.tokens}"
       SSM_CONFIG_PATH                      = "${var.ssm_paths.root}/${var.ssm_paths.config}"
       SUBNET_IDS                           = join(",", var.subnet_ids)
+      ENABLE_ON_DEMAND_FAILOVER            = var.enable_on_demand_failover
     }
   }
 

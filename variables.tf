@@ -220,6 +220,12 @@ variable "enable_runner_detailed_monitoring" {
   default     = false
 }
 
+variable "enable_runner_on_demand_failover" {
+  description = "Enable on-demand failover. When enabled InsufficientInstanceCapacity errors will be retried with an on-demand instance. When disabled the creation will be retried later."
+  type        = bool
+  default     = false
+}
+
 variable "enable_userdata" {
   description = "Should the userdata script be enabled for the runner. Set this to false if you are using your own prebuilt AMI."
   type        = bool

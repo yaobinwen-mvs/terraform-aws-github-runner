@@ -210,6 +210,7 @@ module "runners" {
   enable_ephemeral_runners             = var.enable_ephemeral_runners
   enable_jit_config                    = var.enable_jit_config
   enable_job_queued_check              = var.enable_job_queued_check
+  enable_on_demand_failover            = var.enable_runner_on_demand_failover
   disable_runner_autoupdate            = var.disable_runner_autoupdate
   enable_managed_runner_security_group = var.enable_managed_runner_security_group
   enable_runner_detailed_monitoring    = var.enable_runner_detailed_monitoring

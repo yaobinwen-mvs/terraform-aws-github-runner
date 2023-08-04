@@ -616,3 +616,9 @@ variable "enable_jit_config" {
   type        = bool
   default     = null
 }
+
+variable "enable_on_demand_failover" {
+  description = "Enable on-demand failover. When enabled InsufficientInstanceCapacity errors will be retried with an on-demand instance. When disabled the creation will be retried later."
+  type        = bool
+  default     = false
+}
