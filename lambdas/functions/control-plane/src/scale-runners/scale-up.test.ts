@@ -77,6 +77,7 @@ const EXPECTED_RUNNER_PARAMS: RunnerInputParameters = {
     instanceAllocationStrategy: 'lowest-price',
   },
   subnets: ['subnet-123'],
+  onDemandFailoverEnabled: false,
 };
 let expectedRunnerParams: RunnerInputParameters;
 
@@ -95,6 +96,7 @@ beforeEach(() => {
   process.env.SUBNET_IDS = 'subnet-123';
   process.env.INSTANCE_TYPES = 'm5.large';
   process.env.INSTANCE_TARGET_CAPACITY_TYPE = 'spot';
+  process.env.ENABLE_ON_DEMAND_FAILOVER = undefined;
 
   mockOctokit.actions.getJobForWorkflowRun.mockImplementation(() => ({
     data: {
@@ -650,6 +652,13 @@ describe('scaleUp with public GH', () => {
       process.env.RUNNER_LABELS = 'label1,label2';
       await scaleUpModule.scaleUp('aws:sqs', TEST_DATA);
       expect(createRunner).toBeCalledWith(expectedRunnerParams);
+    });
+
+    it('creates a runner with correct config and labels and ondemand failover enabled.', async () => {
+      process.env.RUNNER_LABELS = 'label1,label2';
+      process.env.ENABLE_ON_DEMAND_FAILOVER = 'true';
+      await scaleUpModule.scaleUp('aws:sqs', TEST_DATA);
+      expect(createRunner).toBeCalledWith({ ...expectedRunnerParams, onDemandFailoverEnabled: true });
     });
 
     it('creates a runner and ensure the group argument is ignored', async () => {
