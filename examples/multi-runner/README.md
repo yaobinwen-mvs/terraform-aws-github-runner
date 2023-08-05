@@ -68,7 +68,7 @@ Be aware some shells will print some end of line character `%`.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_base"></a> [base](#module\_base) | ../base | n/a |
-| <a name="module_multi-runner"></a> [multi-runner](#module\_multi-runner) | ../../modules/multi-runner | n/a |
+| <a name="module_multi_runner"></a> [multi\_runner](#module\_multi\_runner) | ../../modules/multi-runner | n/a |
 
 ## Resources
 
