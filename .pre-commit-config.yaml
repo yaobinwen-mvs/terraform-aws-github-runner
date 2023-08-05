@@ -4,6 +4,8 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl --var-file __GIT_WORKING_DIR__/.github/lint/tflint.tfvars
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
