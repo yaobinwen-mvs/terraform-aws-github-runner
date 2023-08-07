@@ -129,7 +129,7 @@ variable "ami_filter" {
   type        = map(list(string))
   default     = { state = ["available"] }
   validation {
-    // check the availability of the AMI
+    # check the availability of the AMI
     condition     = contains(keys(var.ami_filter), "state")
     error_message = "The \"ami_filter\" variable must contain the \"state\" key with the value \"available\"."
   }
