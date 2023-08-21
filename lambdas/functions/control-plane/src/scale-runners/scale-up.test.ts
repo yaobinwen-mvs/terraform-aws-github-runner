@@ -654,7 +654,7 @@ describe('scaleUp with public GH', () => {
       expect(createRunner).toBeCalledWith(expectedRunnerParams);
     });
 
-    it('creates a runner with correct config and labels and ondemand failover enabled.', async () => {
+    it('creates a runner with correct config and labels and on demand failover enabled.', async () => {
       process.env.RUNNER_LABELS = 'label1,label2';
       process.env.ENABLE_ON_DEMAND_FAILOVER = 'true';
       await scaleUpModule.scaleUp('aws:sqs', TEST_DATA);
