@@ -36,7 +36,8 @@ export async function adjust(event: PoolEvent): Promise<void> {
   const instanceAllocationStrategy = process.env.INSTANCE_ALLOCATION_STRATEGY || 'lowest-price'; // same as AWS default
   const runnerOwner = process.env.RUNNER_OWNER;
   const amiIdSsmParameterName = process.env.AMI_ID_SSM_PARAMETER_NAME;
-  const onDemandFailoverEnabled = yn(process.env.ON_DEMAND_FAILOVER_ENABLED, { default: false });
+  const onDemandFailoverOnError = process.env.ENABLE_ON_DEMAND_FAILOVER_FOR_ERRORS
+    ? (JSON.parse(process.env.ENABLE_ON_DEMAND_FAILOVER_FOR_ERRORS) as [string]) : [];
 
   let ghesApiUrl = '';
   if (ghesBaseUrl) {
@@ -119,7 +120,7 @@ export async function adjust(event: PoolEvent): Promise<void> {
         subnets,
         numberOfRunners: topUp,
         amiIdSsmParameterName,
-        onDemandFailoverEnabled,
+        onDemandFailoverOnError,
       },
       githubInstallationClient,
     );

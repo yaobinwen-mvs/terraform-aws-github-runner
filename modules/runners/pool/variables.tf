@@ -26,12 +26,12 @@ variable "config" {
     })
     subnet_ids = list(string)
     runner = object({
-      disable_runner_autoupdate = bool
-      ephemeral                 = bool
-      enable_jit_config         = bool
-      enable_on_demand_failover = bool
-      boot_time_in_minutes      = number
-      labels                    = string
+      disable_runner_autoupdate            = bool
+      ephemeral                            = bool
+      enable_jit_config                    = bool
+      enable_on_demand_failover_for_errors = list(string)
+      boot_time_in_minutes                 = number
+      labels                               = string
       launch_template = object({
         name = string
       })

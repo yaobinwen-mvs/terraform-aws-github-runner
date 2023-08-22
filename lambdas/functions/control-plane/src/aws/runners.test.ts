@@ -178,7 +178,6 @@ describe('create runner', () => {
     mockEC2Client.reset();
     mockSSMClient.reset();
 
-    //mockEC2.createFleet.mockImplementation(() => mockCreateFleet);
     mockEC2Client.on(CreateFleetCommand).resolves({ Instances: [{ InstanceIds: ['i-1234'] }] });
     mockSSMClient.on(GetParameterCommand).resolves({});
   });
@@ -348,7 +347,7 @@ describe('create runner with errors fail over to OnDemand', () => {
     allocationStrategy: SpotAllocationStrategy.CAPACITY_OPTIMIZED,
     capacityType: 'spot',
     type: 'Repo',
-    onDemandFailoverEnabled: true,
+    onDemandFailoverOnError: ['InsufficientInstanceCapacity'],
   };
   const defaultExpectedFleetRequestValues: ExpectedFleetRequestValues = {
     type: 'Repo',
@@ -396,7 +395,7 @@ describe('create runner with errors fail over to OnDemand', () => {
 
   it('test InsufficientInstanceCapacity no failback.', async () => {
     await expect(
-      createRunner(createRunnerConfig({ ...defaultRunnerConfig, onDemandFailoverEnabled: false })),
+      createRunner(createRunnerConfig({ ...defaultRunnerConfig, onDemandFailoverOnError: [] })),
     ).rejects.toBeInstanceOf(Error);
   });
 
@@ -427,6 +426,27 @@ describe('create runner with errors fail over to OnDemand', () => {
       }),
     });
   });
+
+  it('test UnfulfillableCapacity with mutlipte instances and no fallback to on demand .', async () => {
+    const instancesIds = ['i-123', 'i-456'];
+    // fallback to on demand for UnfulfillableCapacity but InsufficientInstanceCapacity is thrown
+    createFleetMockWithWithOnDemandFallback(['UnfulfillableCapacity'], instancesIds);
+
+    await expect(
+      createRunner({ ...createRunnerConfig(defaultRunnerConfig), numberOfRunners: 2 }),
+    ).rejects.toBeInstanceOf(Error);
+
+    expect(mockEC2Client).toHaveReceivedCommandTimes(CreateFleetCommand, 1);
+
+    // first call with spot failuer
+    expect(mockEC2Client).toHaveReceivedCommandWith(CreateFleetCommand, {
+      ...expectedCreateFleetRequest({
+        ...defaultExpectedFleetRequestValues,
+        totalTargetCapacity: 2,
+        capacityType: 'spot',
+      }),
+    });
+  });
 });
 
 function createFleetMockWithErrors(errors: string[], instances?: string[]) {
@@ -449,15 +469,13 @@ function createFleetMockWithErrors(errors: string[], instances?: string[]) {
 }
 
 function createFleetMockWithWithOnDemandFallback(errors: string[], instances?: string[], numberOfFailures = 1) {
-  const instanceesFirstCall: CreateFleetInstance =
-    {
-      InstanceIds: instances?.slice(0, instances.length - numberOfFailures).map((i) => i),
-    } || [];
+  const instanceesFirstCall: CreateFleetInstance = {
+    InstanceIds: instances?.slice(0, instances.length - numberOfFailures).map((i) => i),
+  };
 
-  const instancesSecondCall: CreateFleetInstance =
-    {
-      InstanceIds: instances?.slice(instances.length - numberOfFailures, instances.length).map((i) => i),
-    } || [];
+  const instancesSecondCall: CreateFleetInstance = {
+    InstanceIds: instances?.slice(instances.length - numberOfFailures, instances.length).map((i) => i),
+  };
 
   mockEC2Client
     .on(CreateFleetCommand)
@@ -471,7 +489,7 @@ interface RunnerConfig {
   allocationStrategy: SpotAllocationStrategy;
   maxSpotPrice?: string;
   amiIdSsmParameterName?: string;
-  onDemandFailoverEnabled?: boolean;
+  onDemandFailoverOnError?: string[];
 }
 
 function createRunnerConfig(runnerConfig: RunnerConfig): RunnerInputParameters {
@@ -488,7 +506,7 @@ function createRunnerConfig(runnerConfig: RunnerConfig): RunnerInputParameters {
     },
     subnets: ['subnet-123', 'subnet-456'],
     amiIdSsmParameterName: runnerConfig.amiIdSsmParameterName,
-    onDemandFailoverEnabled: runnerConfig.onDemandFailoverEnabled || false,
+    onDemandFailoverOnError: runnerConfig.onDemandFailoverOnError,
   };
 }
 
@@ -557,7 +575,7 @@ function expectedCreateFleetRequest(expectedValues: ExpectedFleetRequestValues):
   };
 
   if (expectedValues.imageId) {
-    for (const config of request?.LaunchTemplateConfigs || []) {
+    for (const config of request?.LaunchTemplateConfigs ?? []) {
       if (config.Overrides) {
         for (const override of config.Overrides) {
           override.ImageId = expectedValues.imageId;

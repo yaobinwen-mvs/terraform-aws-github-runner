@@ -42,7 +42,7 @@ resource "aws_lambda_function" "pool" {
       SSM_TOKEN_PATH                       = var.config.ssm_token_path
       SSM_CONFIG_PATH                      = var.config.ssm_config_path
       SUBNET_IDS                           = join(",", var.config.subnet_ids)
-      ENABLE_ON_DEMAND_FAILOVER            = var.config.runner.enable_on_demand_failover
+      ENABLE_ON_DEMAND_FAILOVER_FOR_ERRORS = jsonencode(var.config.runner.enable_on_demand_failover_for_errors)
     }
   }
 

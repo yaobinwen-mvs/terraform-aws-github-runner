@@ -50,7 +50,7 @@ interface CreateEC2RunnerConfig {
   ec2instanceCriteria: RunnerInputParameters['ec2instanceCriteria'];
   numberOfRunners?: number;
   amiIdSsmParameterName?: string;
-  onDemandFailoverEnabled?: boolean;
+  onDemandFailoverOnError?: string[];
 }
 
 function generateRunnerServiceConfig(githubRunnerConfig: CreateGitHubRunnerConfig, token: string) {
@@ -236,7 +236,8 @@ export async function scaleUp(eventSource: string, payload: ActionRequestMessage
   const amiIdSsmParameterName = process.env.AMI_ID_SSM_PARAMETER_NAME;
   const runnerNamePrefix = process.env.RUNNER_NAME_PREFIX || '';
   const ssmConfigPath = process.env.SSM_CONFIG_PATH || '';
-  const onDemandFailoverEnabled = yn(process.env.ENABLE_ON_DEMAND_FAILOVER, { default: false });
+  const onDemandFailoverOnError = process.env.ENABLE_ON_DEMAND_FAILOVER_FOR_ERRORS
+    ? (JSON.parse(process.env.ENABLE_ON_DEMAND_FAILOVER_FOR_ERRORS) as [string]) : [];
 
   if (ephemeralEnabled && payload.eventType !== 'workflow_job') {
     logger.warn(`${payload.eventType} event is not supported in combination with ephemeral runners.`);
@@ -306,7 +307,7 @@ export async function scaleUp(eventSource: string, payload: ActionRequestMessage
           launchTemplateName,
           subnets,
           amiIdSsmParameterName,
-          onDemandFailoverEnabled,
+          onDemandFailoverOnError,
         },
         githubInstallationClient,
       );
@@ -333,7 +334,7 @@ async function createStartRunnerConfig(
 function addDelay(instances: string[]) {
   const delay = async (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   const ssmParameterStoreMaxThroughput = 40;
-  const isDelay = instances.length >= ssmParameterStoreMaxThroughput ? true : false;
+  const isDelay = instances.length >= ssmParameterStoreMaxThroughput;
   return { isDelay, delay };
 }
 

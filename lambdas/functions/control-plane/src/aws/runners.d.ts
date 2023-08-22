@@ -39,5 +39,5 @@ export interface RunnerInputParameters {
   };
   numberOfRunners?: number;
   amiIdSsmParameterName?: string;
-  onDemandFailoverEnabled?: boolean;
+  onDemandFailoverOnError?: string[];
 }

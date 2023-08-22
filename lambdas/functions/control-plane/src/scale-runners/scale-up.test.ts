@@ -77,7 +77,7 @@ const EXPECTED_RUNNER_PARAMS: RunnerInputParameters = {
     instanceAllocationStrategy: 'lowest-price',
   },
   subnets: ['subnet-123'],
-  onDemandFailoverEnabled: false,
+  onDemandFailoverOnError: [],
 };
 let expectedRunnerParams: RunnerInputParameters;
 
@@ -656,9 +656,12 @@ describe('scaleUp with public GH', () => {
 
     it('creates a runner with correct config and labels and on demand failover enabled.', async () => {
       process.env.RUNNER_LABELS = 'label1,label2';
-      process.env.ENABLE_ON_DEMAND_FAILOVER = 'true';
+      process.env.ENABLE_ON_DEMAND_FAILOVER_FOR_ERRORS = JSON.stringify(['InsufficientInstanceCapacity']);
       await scaleUpModule.scaleUp('aws:sqs', TEST_DATA);
-      expect(createRunner).toBeCalledWith({ ...expectedRunnerParams, onDemandFailoverEnabled: true });
+      expect(createRunner).toBeCalledWith({
+        ...expectedRunnerParams,
+        onDemandFailoverOnError: ['InsufficientInstanceCapacity'],
+      });
     });
 
     it('creates a runner and ensure the group argument is ignored', async () => {

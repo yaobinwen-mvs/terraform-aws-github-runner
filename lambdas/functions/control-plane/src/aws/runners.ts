@@ -170,9 +170,9 @@ async function processFleetResult(
     ];
 
     if (
-      runnerParameters.onDemandFailoverEnabled &&
-      runnerParameters.ec2instanceCriteria.targetCapacityType === 'spot' &&
-      errors.some((e) => e === 'InsufficientInstanceCapacity')
+      errors.some((e) => runnerParameters.onDemandFailoverOnError?.includes(e)) &&
+      runnerParameters.onDemandFailoverOnError &&
+      runnerParameters.ec2instanceCriteria.targetCapacityType === 'spot'
     ) {
       logger.warn('Create fleet failed, InsufficientInstanceCapacity will be ignored and fall back to OnDemand.');
       logger.debug('Create fleet failed.', { data: fleet.Errors });
@@ -181,7 +181,7 @@ async function processFleetResult(
       const instancesOnDemand = await createRunner({
         ...runnerParameters,
         numberOfRunners: numberOfInstances,
-        onDemandFailoverEnabled: false,
+        onDemandFailoverOnError: ['InsufficientInstanceCapacity'],
         ec2instanceCriteria: { ...runnerParameters.ec2instanceCriteria, targetCapacityType: 'on-demand' },
       });
       instances.push(...instancesOnDemand);
