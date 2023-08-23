@@ -140,6 +140,28 @@ describe('list instances', () => {
     const resp = await listEC2Runners();
     expect(resp.length).toBe(1);
   });
+
+  it('Filter instances for state running.', async () => {
+    mockEC2Client.on(DescribeInstancesCommand).resolves(mockRunningInstances);
+    await listEC2Runners({ statuses: ['running'] });
+    expect(mockEC2Client).toHaveReceivedCommandWith(DescribeInstancesCommand, {
+      Filters: [
+        { Name: 'instance-state-name', Values: ['running'] },
+        { Name: 'tag:ghr:Application', Values: ['github-action-runner'] },
+      ],
+    });
+  });
+
+  it('Filter instances with status undefined, fall back to defaults.', async () => {
+    mockEC2Client.on(DescribeInstancesCommand).resolves(mockRunningInstances);
+    await listEC2Runners({ statuses: undefined });
+    expect(mockEC2Client).toHaveReceivedCommandWith(DescribeInstancesCommand, {
+      Filters: [
+        { Name: 'instance-state-name', Values: ['running', 'pending'] },
+        { Name: 'tag:ghr:Application', Values: ['github-action-runner'] },
+      ],
+    });
+  });
 });
 
 describe('terminate runner', () => {
@@ -497,6 +519,7 @@ function createRunnerConfig(runnerConfig: RunnerConfig): RunnerInputParameters {
     environment: ENVIRONMENT,
     runnerType: runnerConfig.type,
     runnerOwner: REPO_NAME,
+    numberOfRunners: 1,
     launchTemplateName: LAUNCH_TEMPLATE,
     ec2instanceCriteria: {
       instanceTypes: ['m5.large', 'c5.large'],

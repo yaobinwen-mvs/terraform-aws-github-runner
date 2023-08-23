@@ -128,13 +128,9 @@ export async function createRunner(runnerParameters: Runners.RunnerInputParamete
   const ec2Client = new EC2Client({ region: process.env.AWS_REGION });
   const amiIdOverride = await getAmiIdOverride(runnerParameters);
 
-  const numberOfRunners = runnerParameters.numberOfRunners || 1;
-  const fleet: CreateFleetResult = await createInstances(numberOfRunners, runnerParameters, amiIdOverride, ec2Client);
+  const fleet: CreateFleetResult = await createInstances(runnerParameters, amiIdOverride, ec2Client);
 
-  const instances: string[] = await processFleetResult(fleet, {
-    ...runnerParameters,
-    numberOfRunners: numberOfRunners,
-  });
+  const instances: string[] = await processFleetResult(fleet, runnerParameters);
 
   logger.info(`Created instance(s): ${instances.join(',')}`);
 
@@ -218,14 +214,13 @@ async function getAmiIdOverride(runnerParameters: Runners.RunnerInputParameters)
 }
 
 async function createInstances(
-  numberOfRunners: number,
   runnerParameters: Runners.RunnerInputParameters,
   amiIdOverride: string | undefined,
   ec2Client: EC2Client,
 ) {
   const tags = [
     { Key: 'ghr:Application', Value: 'github-action-runner' },
-    { Key: 'ghr:created_by', Value: numberOfRunners === 1 ? 'scale-up-lambda' : 'pool-lambda' },
+    { Key: 'ghr:created_by', Value: runnerParameters.numberOfRunners === 1 ? 'scale-up-lambda' : 'pool-lambda' },
     { Key: 'Type', Value: runnerParameters.runnerType },
     { Key: 'Owner', Value: runnerParameters.runnerOwner },
   ];
@@ -252,7 +247,7 @@ async function createInstances(
         AllocationStrategy: runnerParameters.ec2instanceCriteria.instanceAllocationStrategy,
       },
       TargetCapacitySpecification: {
-        TotalTargetCapacity: numberOfRunners,
+        TotalTargetCapacity: runnerParameters.numberOfRunners,
         DefaultTargetCapacityType: runnerParameters.ec2instanceCriteria.targetCapacityType,
       },
       TagSpecifications: [

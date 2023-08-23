@@ -70,6 +70,7 @@ const EXPECTED_RUNNER_PARAMS: RunnerInputParameters = {
   environment: 'unit-test-environment',
   runnerType: 'Org',
   runnerOwner: TEST_DATA.repositoryOwner,
+  numberOfRunners: 1,
   launchTemplateName: 'lt-1',
   ec2instanceCriteria: {
     instanceTypes: ['m5.large'],

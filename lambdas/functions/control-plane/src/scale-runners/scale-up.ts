@@ -205,6 +205,7 @@ export async function createRunners(
   const instances = await createRunner({
     runnerType: githubRunnerConfig.runnerType,
     runnerOwner: githubRunnerConfig.runnerOwner,
+    numberOfRunners: 1,
     ...ec2RunnerConfig,
   });
   if (instances.length !== 0) {
