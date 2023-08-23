@@ -375,7 +375,7 @@ describe('create runner with errors fail over to OnDemand', () => {
     expect(mockEC2Client).toHaveReceivedCommandTimes(CreateFleetCommand, 2);
 
     // first call with spot failuer
-    expect(mockEC2Client).toHaveReceivedCommandWith(CreateFleetCommand, {
+    expect(mockEC2Client).toHaveReceivedNthCommandWith(1, CreateFleetCommand, {
       ...expectedCreateFleetRequest({
         ...defaultExpectedFleetRequestValues,
         totalTargetCapacity: 1,
@@ -384,7 +384,7 @@ describe('create runner with errors fail over to OnDemand', () => {
     });
 
     // second call with with OnDemand failback
-    expect(mockEC2Client).toHaveReceivedCommandWith(CreateFleetCommand, {
+    expect(mockEC2Client).toHaveReceivedNthCommandWith(2, CreateFleetCommand, {
       ...expectedCreateFleetRequest({
         ...defaultExpectedFleetRequestValues,
         totalTargetCapacity: 1,
@@ -409,7 +409,7 @@ describe('create runner with errors fail over to OnDemand', () => {
     expect(mockEC2Client).toHaveReceivedCommandTimes(CreateFleetCommand, 2);
 
     // first call with spot failuer
-    expect(mockEC2Client).toHaveReceivedCommandWith(CreateFleetCommand, {
+    expect(mockEC2Client).toHaveReceivedNthCommandWith(1, CreateFleetCommand, {
       ...expectedCreateFleetRequest({
         ...defaultExpectedFleetRequestValues,
         totalTargetCapacity: 2,
@@ -418,7 +418,7 @@ describe('create runner with errors fail over to OnDemand', () => {
     });
 
     // second call with with OnDemand failback, capacity is reduced by 1
-    expect(mockEC2Client).toHaveReceivedCommandWith(CreateFleetCommand, {
+    expect(mockEC2Client).toHaveReceivedNthCommandWith(2, CreateFleetCommand, {
       ...expectedCreateFleetRequest({
         ...defaultExpectedFleetRequestValues,
         totalTargetCapacity: 1,
@@ -439,7 +439,7 @@ describe('create runner with errors fail over to OnDemand', () => {
     expect(mockEC2Client).toHaveReceivedCommandTimes(CreateFleetCommand, 1);
 
     // first call with spot failuer
-    expect(mockEC2Client).toHaveReceivedCommandWith(CreateFleetCommand, {
+    expect(mockEC2Client).toHaveReceivedNthCommandWith(1, CreateFleetCommand, {
       ...expectedCreateFleetRequest({
         ...defaultExpectedFleetRequestValues,
         totalTargetCapacity: 2,
