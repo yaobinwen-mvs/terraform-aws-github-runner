@@ -174,7 +174,7 @@ async function processFleetResult(
       runnerParameters.onDemandFailoverOnError &&
       runnerParameters.ec2instanceCriteria.targetCapacityType === 'spot'
     ) {
-      logger.warn('Create fleet failed, InsufficientInstanceCapacity will be ignored and fall back to OnDemand.');
+      logger.warn(`Create fleet failed, initatiing fall back to on demand instances.`);
       logger.debug('Create fleet failed.', { data: fleet.Errors });
       const numberOfInstances =
         (runnerParameters.numberOfRunners ? runnerParameters.numberOfRunners : 1) - instances.length;
