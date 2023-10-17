@@ -1,6 +1,6 @@
 locals {
   environment = "ubuntu"
-  aws_region  = "eu-west-1"
+  aws_region  = "us-east-2"
 }
 
 resource "random_id" "random" {
@@ -32,11 +32,16 @@ module "runners" {
     webhook_secret = random_id.random.hex
   }
 
-  # webhook_lambda_zip                = "lambdas-download/webhook.zip"
-  # runner_binaries_syncer_lambda_zip = "lambdas-download/runner-binaries-syncer.zip"
-  # runners_lambda_zip                = "lambdas-download/runners.zip"
+  webhook_lambda_zip                = "../lambdas-download/webhook.zip"
+  runner_binaries_syncer_lambda_zip = "../lambdas-download/runner-binaries-syncer.zip"
+  runners_lambda_zip                = "../lambdas-download/runners.zip"
 
   enable_organization_runners = false
+
+  # NOTE(ywen): The extra labels in addition to the primary labels.
+  # TODO(ywen): Where are the primary labels configured?
+  # (`modules/multi-runner/runners.tf` has `runner_labels` but they might be
+  # for `multi-runner`. What about single runners?)
   runner_extra_labels         = "default,example"
 
   # enable access to the runners via SSM
@@ -48,12 +53,19 @@ module "runners" {
   #
   # option 1. configure your pre-built AMI + userdata
   userdata_template = "./templates/user-data.sh"
-  ami_owners        = ["099720109477"] # Canonical's Amazon account ID
 
+  ami_owners        = ["amazon"] # Canonical's Amazon account ID
+
+  # NOTE(ywen): Filters refer to `aws ec2 describe-images --filters`
+  # https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html
   ami_filter = {
-    name  = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"],
+    architecture = ["x86_64"],
+    # image-id = ["ami-00d5c4dd05b5467c4"],
+    name  = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-*-server-20230907"],
     state = ["available"]
   }
+
+  instance_types = ["t2.micro"]
 
   # Custom build AMI, no custom userdata needed.
   # option 2: Build custom AMI see ../../images/ubuntu-focal
