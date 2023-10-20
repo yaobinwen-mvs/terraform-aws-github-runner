@@ -1,0 +1,3395 @@
+$ terraform apply -var-file="values.tfvars"
+
+module.multi-runner.data.aws_iam_policy_document.deny_unsecure_transport: Reading...
+module.multi-runner.module.webhook.data.aws_iam_policy_document.lambda_assume_role_policy: Reading...
+module.multi-runner.module.webhook.data.aws_iam_policy_document.lambda_assume_role_policy: Read complete after 0s [id=2690255455]
+module.multi-runner.data.aws_iam_policy_document.deny_unsecure_transport: Read complete after 0s [id=4070628872]
+module.multi-runner.module.runners["linux-arm64"].data.aws_iam_policy_document.lambda_assume_role_policy: Reading...
+module.multi-runner.module.runners["linux-x64"].data.aws_caller_identity.current: Reading...
+module.multi-runner.module.runners["linux-arm64"].data.aws_caller_identity.current: Reading...
+module.multi-runner.module.runners["linux-x64"].data.aws_iam_policy_document.lambda_assume_role_policy: Reading...
+module.multi-runner.module.runners["linux-arm64"].data.aws_iam_policy_document.lambda_assume_role_policy: Read complete after 0s [id=2690255455]
+module.multi-runner.module.runners["linux-x64"].data.aws_iam_policy_document.lambda_assume_role_policy: Read complete after 0s [id=2690255455]
+module.multi-runner.module.runner_binaries["linux_arm64"].data.aws_caller_identity.current: Reading...
+module.multi-runner.module.runner_binaries["linux_x64"].data.aws_caller_identity.current: Reading...
+module.multi-runner.module.runner_binaries["linux_x64"].data.aws_iam_policy_document.lambda_assume_role_policy: Reading...
+module.multi-runner.module.runner_binaries["linux_arm64"].data.aws_iam_policy_document.lambda_assume_role_policy: Reading...
+module.multi-runner.module.runner_binaries["linux_x64"].data.aws_iam_policy_document.lambda_assume_role_policy: Read complete after 0s [id=2690255455]
+module.multi-runner.module.runner_binaries["linux_arm64"].data.aws_iam_policy_document.lambda_assume_role_policy: Read complete after 0s [id=2690255455]
+module.multi-runner.module.runners["linux-x64"].data.aws_ami.runner: Reading...
+module.multi-runner.module.runners["linux-arm64"].data.aws_ami.runner: Reading...
+module.multi-runner.module.runner_binaries["linux_arm64"].data.aws_caller_identity.current: Read complete after 0s [id=315812372544]
+module.multi-runner.module.runners["linux-arm64"].data.aws_caller_identity.current: Read complete after 0s [id=315812372544]
+module.multi-runner.module.runners["linux-x64"].data.aws_caller_identity.current: Read complete after 0s [id=315812372544]
+module.multi-runner.module.runner_binaries["linux_x64"].data.aws_caller_identity.current: Read complete after 0s [id=315812372544]
+module.multi-runner.module.runners["linux-x64"].data.aws_ami.runner: Read complete after 0s [id=ami-0a0d9cf81c479446a]
+module.multi-runner.module.runners["linux-arm64"].data.aws_ami.runner: Read complete after 0s [id=ami-0ab9141e506f8f34f]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # random_id.random will be created
+  + resource "random_id" "random" {
+      + b64_std     = (known after apply)
+      + b64_url     = (known after apply)
+      + byte_length = 20
+      + dec         = (known after apply)
+      + hex         = (known after apply)
+      + id          = (known after apply)
+    }
+
+  # module.base.aws_resourcegroups_group.resourcegroups_group will be created
+  + resource "aws_resourcegroups_group" "resourcegroups_group" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + name     = "multi-runner-group"
+      + tags_all = (known after apply)
+
+      + resource_query {
+          + query = jsonencode(
+                {
+                  + ResourceTypeFilters = [
+                      + "AWS::AllSupported",
+                    ]
+                  + TagFilters          = [
+                      + {
+                          + Key    = "Example"
+                          + Values = [
+                              + "multi-runner",
+                            ]
+                        },
+                    ]
+                }
+            )
+          + type  = "TAG_FILTERS_1_0"
+        }
+    }
+
+  # module.multi-runner.aws_sqs_queue.queued_builds["linux-arm64"] will be created
+  + resource "aws_sqs_queue" "queued_builds" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = true
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 30
+      + fifo_queue                        = true
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = (known after apply)
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 86400
+      + name                              = "multi-runner-linux-arm64-queued-builds.fifo"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Project" = "ProjectX"
+        }
+      + tags_all                          = {
+          + "Project" = "ProjectX"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 60
+    }
+
+  # module.multi-runner.aws_sqs_queue.queued_builds["linux-x64"] will be created
+  + resource "aws_sqs_queue" "queued_builds" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = true
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 30
+      + fifo_queue                        = true
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = (known after apply)
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 86400
+      + name                              = "multi-runner-linux-x64-queued-builds.fifo"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Project" = "ProjectX"
+        }
+      + tags_all                          = {
+          + "Project" = "ProjectX"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 60
+    }
+
+  # module.multi-runner.aws_sqs_queue_policy.build_queue_policy["linux-arm64"] will be created
+  + resource "aws_sqs_queue_policy" "build_queue_policy" {
+      + id        = (known after apply)
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sqs:*"
+                      + Condition = {
+                          + Bool = {
+                              + "aws:SecureTransport" = "false"
+                            }
+                        }
+                      + Effect    = "Deny"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                      + Resource  = "*"
+                      + Sid       = "DenyUnsecureTransport"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + queue_url = (known after apply)
+    }
+
+  # module.multi-runner.aws_sqs_queue_policy.build_queue_policy["linux-x64"] will be created
+  + resource "aws_sqs_queue_policy" "build_queue_policy" {
+      + id        = (known after apply)
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sqs:*"
+                      + Condition = {
+                          + Bool = {
+                              + "aws:SecureTransport" = "false"
+                            }
+                        }
+                      + Effect    = "Deny"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                      + Resource  = "*"
+                      + Sid       = "DenyUnsecureTransport"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + queue_url = (known after apply)
+    }
+
+  # module.multi-runner.random_string.random will be created
+  + resource "random_string" "random" {
+      + id          = (known after apply)
+      + length      = 24
+      + lower       = true
+      + min_lower   = 0
+      + min_numeric = 0
+      + min_special = 0
+      + min_upper   = 0
+      + number      = true
+      + numeric     = true
+      + result      = (known after apply)
+      + special     = false
+      + upper       = false
+    }
+
+  # module.webhook-github-app.null_resource.update_app will be created
+  + resource "null_resource" "update_app" {
+      + id       = (known after apply)
+      + triggers = {
+          + "webhook_endpoint" = (known after apply)
+          + "webhook_secret"   = (known after apply)
+        }
+    }
+
+  # module.base.module.vpc.aws_default_network_acl.this[0] will be created
+  + resource "aws_default_network_acl" "this" {
+      + arn                    = (known after apply)
+      + default_network_acl_id = (known after apply)
+      + id                     = (known after apply)
+      + owner_id               = (known after apply)
+      + tags                   = {
+          + "Name" = "multi-runner-vpc-default"
+        }
+      + tags_all               = {
+          + "Name" = "multi-runner-vpc-default"
+        }
+      + vpc_id                 = (known after apply)
+
+      + egress {
+          + action          = "allow"
+          + from_port       = 0
+          + ipv6_cidr_block = "::/0"
+          + protocol        = "-1"
+          + rule_no         = 101
+          + to_port         = 0
+        }
+      + egress {
+          + action     = "allow"
+          + cidr_block = "0.0.0.0/0"
+          + from_port  = 0
+          + protocol   = "-1"
+          + rule_no    = 100
+          + to_port    = 0
+        }
+
+      + ingress {
+          + action          = "allow"
+          + from_port       = 0
+          + ipv6_cidr_block = "::/0"
+          + protocol        = "-1"
+          + rule_no         = 101
+          + to_port         = 0
+        }
+      + ingress {
+          + action     = "allow"
+          + cidr_block = "0.0.0.0/0"
+          + from_port  = 0
+          + protocol   = "-1"
+          + rule_no    = 100
+          + to_port    = 0
+        }
+    }
+
+  # module.base.module.vpc.aws_default_route_table.default[0] will be created
+  + resource "aws_default_route_table" "default" {
+      + arn                    = (known after apply)
+      + default_route_table_id = (known after apply)
+      + id                     = (known after apply)
+      + owner_id               = (known after apply)
+      + route                  = (known after apply)
+      + tags                   = {
+          + "Name" = "multi-runner-vpc-default"
+        }
+      + tags_all               = {
+          + "Name" = "multi-runner-vpc-default"
+        }
+      + vpc_id                 = (known after apply)
+
+      + timeouts {
+          + create = "5m"
+          + update = "5m"
+        }
+    }
+
+  # module.base.module.vpc.aws_default_security_group.this[0] will be created
+  + resource "aws_default_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = (known after apply)
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "multi-runner-vpc-default"
+        }
+      + tags_all               = {
+          + "Name" = "multi-runner-vpc-default"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_eip.nat[0] will be created
+  + resource "aws_eip" "nat" {
+      + allocation_id        = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags                 = {
+          + "Name" = "multi-runner-vpc-us-east-2a"
+        }
+      + tags_all             = {
+          + "Name" = "multi-runner-vpc-us-east-2a"
+        }
+      + vpc                  = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_internet_gateway.this[0] will be created
+  + resource "aws_internet_gateway" "this" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + tags     = {
+          + "Name" = "multi-runner-vpc"
+        }
+      + tags_all = {
+          + "Name" = "multi-runner-vpc"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_nat_gateway.this[0] will be created
+  + resource "aws_nat_gateway" "this" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Name" = "multi-runner-vpc-us-east-2a"
+        }
+      + tags_all                           = {
+          + "Name" = "multi-runner-vpc-us-east-2a"
+        }
+    }
+
+  # module.base.module.vpc.aws_route.private_nat_gateway[0] will be created
+  + resource "aws_route" "private_nat_gateway" {
+      + destination_cidr_block = "0.0.0.0/0"
+      + id                     = (known after apply)
+      + instance_id            = (known after apply)
+      + instance_owner_id      = (known after apply)
+      + nat_gateway_id         = (known after apply)
+      + network_interface_id   = (known after apply)
+      + origin                 = (known after apply)
+      + route_table_id         = (known after apply)
+      + state                  = (known after apply)
+
+      + timeouts {
+          + create = "5m"
+        }
+    }
+
+  # module.base.module.vpc.aws_route.public_internet_gateway[0] will be created
+  + resource "aws_route" "public_internet_gateway" {
+      + destination_cidr_block = "0.0.0.0/0"
+      + gateway_id             = (known after apply)
+      + id                     = (known after apply)
+      + instance_id            = (known after apply)
+      + instance_owner_id      = (known after apply)
+      + network_interface_id   = (known after apply)
+      + origin                 = (known after apply)
+      + route_table_id         = (known after apply)
+      + state                  = (known after apply)
+
+      + timeouts {
+          + create = "5m"
+        }
+    }
+
+  # module.base.module.vpc.aws_route_table.private[0] will be created
+  + resource "aws_route_table" "private" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = (known after apply)
+      + tags             = {
+          + "Name" = "multi-runner-vpc-private"
+        }
+      + tags_all         = {
+          + "Name" = "multi-runner-vpc-private"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_route_table.public[0] will be created
+  + resource "aws_route_table" "public" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = (known after apply)
+      + tags             = {
+          + "Name" = "multi-runner-vpc-public"
+        }
+      + tags_all         = {
+          + "Name" = "multi-runner-vpc-public"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_route_table_association.private[0] will be created
+  + resource "aws_route_table_association" "private" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_route_table_association.private[1] will be created
+  + resource "aws_route_table_association" "private" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_route_table_association.public[0] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_route_table_association.public[1] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_subnet.private[0] will be created
+  + resource "aws_subnet" "private" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-2a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name" = "multi-runner-vpc-private-us-east-2a"
+        }
+      + tags_all                                       = {
+          + "Name" = "multi-runner-vpc-private-us-east-2a"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_subnet.private[1] will be created
+  + resource "aws_subnet" "private" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-2b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.2.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name" = "multi-runner-vpc-private-us-east-2b"
+        }
+      + tags_all                                       = {
+          + "Name" = "multi-runner-vpc-private-us-east-2b"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_subnet.public[0] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-2a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.101.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name" = "multi-runner-vpc-public-us-east-2a"
+        }
+      + tags_all                                       = {
+          + "Name" = "multi-runner-vpc-public-us-east-2a"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_subnet.public[1] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-2b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.102.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name" = "multi-runner-vpc-public-us-east-2b"
+        }
+      + tags_all                                       = {
+          + "Name" = "multi-runner-vpc-public-us-east-2b"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.base.module.vpc.aws_vpc.this[0] will be created
+  + resource "aws_vpc" "this" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.0.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + tags                                 = {
+          + "Name" = "multi-runner-vpc"
+        }
+      + tags_all                             = {
+          + "Name" = "multi-runner-vpc"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].data.aws_iam_policy_document.action_dist_bucket_policy will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "action_dist_bucket_policy" {
+      + id   = (known after apply)
+      + json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:*",
+            ]
+          + effect    = "Deny"
+          + resources = [
+              + (known after apply),
+              + (known after apply),
+            ]
+          + sid       = "ForceSSLOnlyAccess"
+
+          + condition {
+              + test     = "Bool"
+              + values   = [
+                  + "false",
+                ]
+              + variable = "aws:SecureTransport"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "*",
+                ]
+              + type        = "*"
+            }
+        }
+      + statement {
+          + actions   = [
+              + "s3:PutObject",
+            ]
+          + effect    = "Deny"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ForceSSE"
+
+          + condition {
+              + test     = "StringNotEquals"
+              + values   = [
+                  + "AES256",
+                ]
+              + variable = "s3:x-amz-server-side-encryption"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "*",
+                ]
+              + type        = "AWS"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_cloudwatch_event_rule.syncer will be created
+  + resource "aws_cloudwatch_event_rule" "syncer" {
+      + arn                 = (known after apply)
+      + event_bus_name      = "default"
+      + id                  = (known after apply)
+      + is_enabled          = true
+      + name                = "multi-runner-linux-arm64-syncer-rule"
+      + name_prefix         = (known after apply)
+      + schedule_expression = "cron(27 * * * ? *)"
+      + tags                = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all            = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_cloudwatch_event_target.syncer will be created
+  + resource "aws_cloudwatch_event_target" "syncer" {
+      + arn            = (known after apply)
+      + event_bus_name = "default"
+      + id             = (known after apply)
+      + rule           = "multi-runner-linux-arm64-syncer-rule"
+      + target_id      = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_cloudwatch_log_group.syncer will be created
+  + resource "aws_cloudwatch_log_group" "syncer" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/aws/lambda/multi-runner-linux-arm64-syncer"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_iam_role.syncer_lambda will be created
+  + resource "aws_iam_role" "syncer_lambda" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-arm64-action-syncer-lambda-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-arm64/"
+      + tags                  = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_iam_role_policy.lambda_logging will be created
+  + resource "aws_iam_role_policy" "lambda_logging" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-arm64-lambda-logging-policy-syncer"
+      + policy = (known after apply)
+      + role   = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_iam_role_policy.syncer will be created
+  + resource "aws_iam_role_policy" "syncer" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-arm64-lambda-syncer-s3-policy"
+      + policy = (known after apply)
+      + role   = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_lambda_function.syncer will be created
+  + resource "aws_lambda_function" "syncer" {
+      + architectures                  = [
+          + "arm64",
+        ]
+      + arn                            = (known after apply)
+      + filename                       = "../lambdas-download/runner-binaries-syncer.zip"
+      + function_name                  = "multi-runner-linux-arm64-syncer"
+      + handler                        = "index.handler"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 256
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs18.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "5Pz/Q6LswvKjePBFnzOQVtiJW2Q9GgybD3zUgaV0Duc="
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all                       = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + timeout                        = 300
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = (known after apply)
+        }
+
+      + vpc_config {
+          + vpc_id = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_lambda_permission.on_deploy will be created
+  + resource "aws_lambda_permission" "on_deploy" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = (known after apply)
+      + id                  = (known after apply)
+      + principal           = "s3.amazonaws.com"
+      + source_account      = "315812372544"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromS3Bucket"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_lambda_permission.syncer will be created
+  + resource "aws_lambda_permission" "syncer" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "multi-runner-linux-arm64-syncer"
+      + id                  = (known after apply)
+      + principal           = "events.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromCloudWatch"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket.action_dist will be created
+  + resource "aws_s3_bucket" "action_dist" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = true
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all                    = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket_lifecycle_configuration.bucket-config will be created
+  + resource "aws_s3_bucket_lifecycle_configuration" "bucket-config" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + id     = "lifecycle_config"
+          + status = "Enabled"
+
+          + abort_incomplete_multipart_upload {
+              + days_after_initiation = 7
+            }
+
+          + transition {
+              + days          = 35
+              + storage_class = "INTELLIGENT_TIERING"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket_notification.on_deploy will be created
+  + resource "aws_s3_bucket_notification" "on_deploy" {
+      + bucket      = (known after apply)
+      + eventbridge = false
+      + id          = (known after apply)
+
+      + lambda_function {
+          + events              = [
+              + "s3:ObjectCreated:*",
+            ]
+          + filter_prefix       = "triggers/"
+          + filter_suffix       = ".json"
+          + id                  = (known after apply)
+          + lambda_function_arn = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket_ownership_controls.this will be created
+  + resource "aws_s3_bucket_ownership_controls" "this" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + object_ownership = "BucketOwnerEnforced"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket_policy.action_dist_bucket_policy will be created
+  + resource "aws_s3_bucket_policy" "action_dist_bucket_policy" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket_public_access_block.action_dist will be created
+  + resource "aws_s3_bucket_public_access_block" "action_dist" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + restrict_public_buckets = true
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket_server_side_encryption_configuration.action_dist[0] will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "action_dist" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + apply_server_side_encryption_by_default {
+              + sse_algorithm = "AES256"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_bucket_versioning.action_dist will be created
+  + resource "aws_s3_bucket_versioning" "action_dist" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Disabled"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_arm64"].aws_s3_object.trigger will be created
+  + resource "aws_s3_object" "trigger" {
+      + bucket                 = (known after apply)
+      + bucket_key_enabled     = (known after apply)
+      + content_type           = (known after apply)
+      + etag                   = "20355efabaae9ed4d51fbc5a68eb4ce3"
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = (known after apply)
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = "AES256"
+      + source                 = "../../modules/runner-binaries-syncer/trigger.json"
+      + storage_class          = (known after apply)
+      + tags_all               = (known after apply)
+      + version_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].data.aws_iam_policy_document.action_dist_bucket_policy will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "action_dist_bucket_policy" {
+      + id   = (known after apply)
+      + json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:*",
+            ]
+          + effect    = "Deny"
+          + resources = [
+              + (known after apply),
+              + (known after apply),
+            ]
+          + sid       = "ForceSSLOnlyAccess"
+
+          + condition {
+              + test     = "Bool"
+              + values   = [
+                  + "false",
+                ]
+              + variable = "aws:SecureTransport"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "*",
+                ]
+              + type        = "*"
+            }
+        }
+      + statement {
+          + actions   = [
+              + "s3:PutObject",
+            ]
+          + effect    = "Deny"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ForceSSE"
+
+          + condition {
+              + test     = "StringNotEquals"
+              + values   = [
+                  + "AES256",
+                ]
+              + variable = "s3:x-amz-server-side-encryption"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "*",
+                ]
+              + type        = "AWS"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_cloudwatch_event_rule.syncer will be created
+  + resource "aws_cloudwatch_event_rule" "syncer" {
+      + arn                 = (known after apply)
+      + event_bus_name      = "default"
+      + id                  = (known after apply)
+      + is_enabled          = true
+      + name                = "multi-runner-linux-x64-syncer-rule"
+      + name_prefix         = (known after apply)
+      + schedule_expression = "cron(27 * * * ? *)"
+      + tags                = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all            = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_cloudwatch_event_target.syncer will be created
+  + resource "aws_cloudwatch_event_target" "syncer" {
+      + arn            = (known after apply)
+      + event_bus_name = "default"
+      + id             = (known after apply)
+      + rule           = "multi-runner-linux-x64-syncer-rule"
+      + target_id      = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_cloudwatch_log_group.syncer will be created
+  + resource "aws_cloudwatch_log_group" "syncer" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/aws/lambda/multi-runner-linux-x64-syncer"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_iam_role.syncer_lambda will be created
+  + resource "aws_iam_role" "syncer_lambda" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-x64-action-syncer-lambda-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-x64/"
+      + tags                  = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_iam_role_policy.lambda_logging will be created
+  + resource "aws_iam_role_policy" "lambda_logging" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-x64-lambda-logging-policy-syncer"
+      + policy = (known after apply)
+      + role   = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_iam_role_policy.syncer will be created
+  + resource "aws_iam_role_policy" "syncer" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-x64-lambda-syncer-s3-policy"
+      + policy = (known after apply)
+      + role   = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_lambda_function.syncer will be created
+  + resource "aws_lambda_function" "syncer" {
+      + architectures                  = [
+          + "arm64",
+        ]
+      + arn                            = (known after apply)
+      + filename                       = "../lambdas-download/runner-binaries-syncer.zip"
+      + function_name                  = "multi-runner-linux-x64-syncer"
+      + handler                        = "index.handler"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 256
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs18.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "5Pz/Q6LswvKjePBFnzOQVtiJW2Q9GgybD3zUgaV0Duc="
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all                       = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + timeout                        = 300
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = (known after apply)
+        }
+
+      + vpc_config {
+          + vpc_id = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_lambda_permission.on_deploy will be created
+  + resource "aws_lambda_permission" "on_deploy" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = (known after apply)
+      + id                  = (known after apply)
+      + principal           = "s3.amazonaws.com"
+      + source_account      = "315812372544"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromS3Bucket"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_lambda_permission.syncer will be created
+  + resource "aws_lambda_permission" "syncer" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "multi-runner-linux-x64-syncer"
+      + id                  = (known after apply)
+      + principal           = "events.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromCloudWatch"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket.action_dist will be created
+  + resource "aws_s3_bucket" "action_dist" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = true
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all                    = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket_lifecycle_configuration.bucket-config will be created
+  + resource "aws_s3_bucket_lifecycle_configuration" "bucket-config" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + id     = "lifecycle_config"
+          + status = "Enabled"
+
+          + abort_incomplete_multipart_upload {
+              + days_after_initiation = 7
+            }
+
+          + transition {
+              + days          = 35
+              + storage_class = "INTELLIGENT_TIERING"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket_notification.on_deploy will be created
+  + resource "aws_s3_bucket_notification" "on_deploy" {
+      + bucket      = (known after apply)
+      + eventbridge = false
+      + id          = (known after apply)
+
+      + lambda_function {
+          + events              = [
+              + "s3:ObjectCreated:*",
+            ]
+          + filter_prefix       = "triggers/"
+          + filter_suffix       = ".json"
+          + id                  = (known after apply)
+          + lambda_function_arn = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket_ownership_controls.this will be created
+  + resource "aws_s3_bucket_ownership_controls" "this" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + object_ownership = "BucketOwnerEnforced"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket_policy.action_dist_bucket_policy will be created
+  + resource "aws_s3_bucket_policy" "action_dist_bucket_policy" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket_public_access_block.action_dist will be created
+  + resource "aws_s3_bucket_public_access_block" "action_dist" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + restrict_public_buckets = true
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket_server_side_encryption_configuration.action_dist[0] will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "action_dist" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + apply_server_side_encryption_by_default {
+              + sse_algorithm = "AES256"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_bucket_versioning.action_dist will be created
+  + resource "aws_s3_bucket_versioning" "action_dist" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Disabled"
+        }
+    }
+
+  # module.multi-runner.module.runner_binaries["linux_x64"].aws_s3_object.trigger will be created
+  + resource "aws_s3_object" "trigger" {
+      + bucket                 = (known after apply)
+      + bucket_key_enabled     = (known after apply)
+      + content_type           = (known after apply)
+      + etag                   = "20355efabaae9ed4d51fbc5a68eb4ce3"
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = (known after apply)
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = "AES256"
+      + source                 = "../../modules/runner-binaries-syncer/trigger.json"
+      + storage_class          = (known after apply)
+      + tags_all               = (known after apply)
+      + version_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_event_rule.scale_down will be created
+  + resource "aws_cloudwatch_event_rule" "scale_down" {
+      + arn                 = (known after apply)
+      + event_bus_name      = "default"
+      + id                  = (known after apply)
+      + is_enabled          = true
+      + name                = "multi-runner-linux-arm64-scale-down-rule"
+      + name_prefix         = (known after apply)
+      + schedule_expression = "cron(* * * * ? *)"
+      + tags                = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-arm64"
+        }
+      + tags_all            = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-arm64"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_event_target.scale_down will be created
+  + resource "aws_cloudwatch_event_target" "scale_down" {
+      + arn            = (known after apply)
+      + event_bus_name = "default"
+      + id             = (known after apply)
+      + rule           = "multi-runner-linux-arm64-scale-down-rule"
+      + target_id      = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_log_group.gh_runners[0] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-arm64/messages"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_log_group.gh_runners[1] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-arm64/user_data"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_log_group.gh_runners[2] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-arm64/runner"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_log_group.gh_runners[3] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-arm64/runner-startup"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_log_group.scale_down will be created
+  + resource "aws_cloudwatch_log_group" "scale_down" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/aws/lambda/multi-runner-linux-arm64-scale-down"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-arm64"
+        }
+      + tags_all          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-arm64"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_cloudwatch_log_group.scale_up will be created
+  + resource "aws_cloudwatch_log_group" "scale_up" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/aws/lambda/multi-runner-linux-arm64-scale-up"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-arm64"
+        }
+      + tags_all          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-arm64"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_instance_profile.runner will be created
+  + resource "aws_iam_instance_profile" "runner" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "multi-runner-linux-arm64-runner-profile"
+      + name_prefix = (known after apply)
+      + path        = "/multi-runner-linux-arm64/"
+      + role        = "multi-runner-linux-arm64-runner-role"
+      + tags_all    = (known after apply)
+      + unique_id   = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role.runner will be created
+  + resource "aws_iam_role" "runner" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                      + Sid       = ""
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-arm64-runner-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-arm64/"
+      + tags                  = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all              = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role.scale_down will be created
+  + resource "aws_iam_role" "scale_down" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-arm64-action-scale-down-lambda-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-arm64/"
+      + tags                  = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all              = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role.scale_up will be created
+  + resource "aws_iam_role" "scale_up" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-arm64-action-scale-up-lambda-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-arm64/"
+      + tags                  = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all              = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.cloudwatch[0] will be created
+  + resource "aws_iam_role_policy" "cloudwatch" {
+      + id     = (known after apply)
+      + name   = "CloudWatchLogginAndMetrics"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-arm64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.describe_tags will be created
+  + resource "aws_iam_role_policy" "describe_tags" {
+      + id     = (known after apply)
+      + name   = "runner-describe-tags"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "ec2:DescribeTags"
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-arm64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.dist_bucket[0] will be created
+  + resource "aws_iam_role_policy" "dist_bucket" {
+      + id     = (known after apply)
+      + name   = "distribution-bucket"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-arm64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.ec2 will be created
+  + resource "aws_iam_role_policy" "ec2" {
+      + id     = (known after apply)
+      + name   = "ec2"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "ec2:TerminateInstances"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:ARN" = "${ec2:SourceInstanceARN}"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-arm64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.runner_session_manager_aws_managed[0] will be created
+  + resource "aws_iam_role_policy" "runner_session_manager_aws_managed" {
+      + id     = (known after apply)
+      + name   = "runner-ssm-session"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ssm:DescribeAssociation",
+                          + "ssm:GetDeployablePatchSnapshotForInstance",
+                          + "ssm:GetDocument",
+                          + "ssm:DescribeDocument",
+                          + "ssm:GetManifest",
+                          + "ssm:ListAssociations",
+                          + "ssm:ListInstanceAssociations",
+                          + "ssm:PutInventory",
+                          + "ssm:PutComplianceItems",
+                          + "ssm:PutConfigurePackageResult",
+                          + "ssm:UpdateAssociationStatus",
+                          + "ssm:UpdateInstanceAssociationStatus",
+                          + "ssm:UpdateInstanceInformation",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ssmmessages:CreateControlChannel",
+                          + "ssmmessages:CreateDataChannel",
+                          + "ssmmessages:OpenControlChannel",
+                          + "ssmmessages:OpenDataChannel",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ec2messages:AcknowledgeMessage",
+                          + "ec2messages:DeleteMessage",
+                          + "ec2messages:FailMessage",
+                          + "ec2messages:GetEndpoint",
+                          + "ec2messages:GetMessages",
+                          + "ec2messages:SendReply",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-arm64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.scale_down will be created
+  + resource "aws_iam_role_policy" "scale_down" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-arm64-lambda-scale-down-policy"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-arm64-action-scale-down-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.scale_down_logging will be created
+  + resource "aws_iam_role_policy" "scale_down_logging" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-arm64-lambda-logging"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-arm64-action-scale-down-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.scale_up will be created
+  + resource "aws_iam_role_policy" "scale_up" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-arm64-lambda-scale-up-policy"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-arm64-action-scale-up-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.scale_up_logging will be created
+  + resource "aws_iam_role_policy" "scale_up_logging" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-arm64-lambda-logging"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-arm64-action-scale-up-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.service_linked_role[0] will be created
+  + resource "aws_iam_role_policy" "service_linked_role" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-arm64-service_linked_role"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "iam:CreateServiceLinkedRole"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:iam::*:role/aws-service-role/*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-arm64-action-scale-up-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_iam_role_policy.ssm_parameters will be created
+  + resource "aws_iam_role_policy" "ssm_parameters" {
+      + id     = (known after apply)
+      + name   = "runner-ssm-parameters"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ssm:DeleteParameter",
+                          + "ssm:GetParameters",
+                          + "ssm:GetParameter",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:ssm:us-east-2:315812372544:parameter/github-action-runners/multi-runner/linux-arm64/runners/tokens*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ssm:GetParameter",
+                          + "ssm:GetParameters",
+                          + "ssm:GetParametersByPath",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:ssm:us-east-2:315812372544:parameter/github-action-runners/multi-runner/linux-arm64/runners/config",
+                          + "arn:aws:ssm:us-east-2:315812372544:parameter/github-action-runners/multi-runner/linux-arm64/runners/config/*",
+                        ]
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-arm64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_lambda_event_source_mapping.scale_up will be created
+  + resource "aws_lambda_event_source_mapping" "scale_up" {
+      + batch_size                    = 1
+      + enabled                       = true
+      + event_source_arn              = (known after apply)
+      + function_arn                  = (known after apply)
+      + function_name                 = (known after apply)
+      + id                            = (known after apply)
+      + last_modified                 = (known after apply)
+      + last_processing_result        = (known after apply)
+      + maximum_record_age_in_seconds = (known after apply)
+      + maximum_retry_attempts        = (known after apply)
+      + parallelization_factor        = (known after apply)
+      + state                         = (known after apply)
+      + state_transition_reason       = (known after apply)
+      + uuid                          = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_lambda_function.scale_down will be created
+  + resource "aws_lambda_function" "scale_down" {
+      + architectures                  = [
+          + "arm64",
+        ]
+      + arn                            = (known after apply)
+      + filename                       = "../lambdas-download/runners.zip"
+      + function_name                  = "multi-runner-linux-arm64-scale-down"
+      + handler                        = "index.scaleDownHandler"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 512
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs18.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "y6BUv+kEaqpnaSmQEsi43eHYjVr53B16mZlwL7WDBhM="
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all                       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + timeout                        = 60
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = {
+              + "ENVIRONMENT"                          = "multi-runner-linux-arm64"
+              + "LOG_LEVEL"                            = "debug"
+              + "MINIMUM_RUNNING_TIME_IN_MINUTES"      = "5"
+              + "NODE_TLS_REJECT_UNAUTHORIZED"         = "1"
+              + "PARAMETER_GITHUB_APP_ID_NAME"         = "/github-action-runners/multi-runner/app/github_app_id"
+              + "PARAMETER_GITHUB_APP_KEY_BASE64_NAME" = "/github-action-runners/multi-runner/app/github_app_key_base64"
+              + "POWERTOOLS_LOGGER_LOG_EVENT"          = "true"
+              + "RUNNER_BOOT_TIME_IN_MINUTES"          = "5"
+              + "SCALE_DOWN_CONFIG"                    = jsonencode([])
+              + "SERVICE_NAME"                         = "runners-scale-down"
+            }
+        }
+
+      + vpc_config {
+          + vpc_id = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_lambda_function.scale_up will be created
+  + resource "aws_lambda_function" "scale_up" {
+      + architectures                  = [
+          + "arm64",
+        ]
+      + arn                            = (known after apply)
+      + filename                       = "../lambdas-download/runners.zip"
+      + function_name                  = "multi-runner-linux-arm64-scale-up"
+      + handler                        = "index.scaleUpHandler"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 512
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = 1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs18.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "y6BUv+kEaqpnaSmQEsi43eHYjVr53B16mZlwL7WDBhM="
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all                       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + timeout                        = 60
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = (known after apply)
+        }
+
+      + vpc_config {
+          + vpc_id = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_lambda_permission.scale_down will be created
+  + resource "aws_lambda_permission" "scale_down" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "multi-runner-linux-arm64-scale-down"
+      + id                  = (known after apply)
+      + principal           = "events.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromCloudWatch"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_lambda_permission.scale_runners_lambda will be created
+  + resource "aws_lambda_permission" "scale_runners_lambda" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "multi-runner-linux-arm64-scale-up"
+      + id                  = (known after apply)
+      + principal           = "sqs.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromSQS"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_launch_template.runner will be created
+  + resource "aws_launch_template" "runner" {
+      + arn                                  = (known after apply)
+      + default_version                      = (known after apply)
+      + ebs_optimized                        = "false"
+      + id                                   = (known after apply)
+      + image_id                             = "ami-0ab9141e506f8f34f"
+      + instance_initiated_shutdown_behavior = "terminate"
+      + latest_version                       = (known after apply)
+      + name                                 = "multi-runner-linux-arm64-action-runner"
+      + name_prefix                          = (known after apply)
+      + tags                                 = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all                             = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + update_default_version               = true
+      + user_data                            = (known after apply)
+      + vpc_security_group_ids               = (known after apply)
+
+      + block_device_mappings {
+          + device_name = "/dev/xvda"
+
+          + ebs {
+              + delete_on_termination = "true"
+              + encrypted             = "true"
+              + iops                  = (known after apply)
+              + throughput            = (known after apply)
+              + volume_size           = 30
+              + volume_type           = "gp3"
+            }
+        }
+
+      + credit_specification {
+          + cpu_credits = "standard"
+        }
+
+      + iam_instance_profile {
+          + name = "multi-runner-linux-arm64-runner-profile"
+        }
+
+      + metadata_options {
+          + http_endpoint               = "enabled"
+          + http_protocol_ipv6          = (known after apply)
+          + http_put_response_hop_limit = 1
+          + http_tokens                 = "optional"
+          + instance_metadata_tags      = "disabled"
+        }
+
+      + monitoring {
+          + enabled = false
+        }
+
+      + tag_specifications {
+          + resource_type = "instance"
+          + tags          = {
+              + "Name"                   = "multi-runner-linux-arm64-action-runner"
+              + "Project"                = "ProjectX"
+              + "ghr:environment"        = "multi-runner-linux-arm64"
+              + "ghr:runner_name_prefix" = "amazon-arm64_"
+              + "ghr:ssm_config_path"    = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+            }
+        }
+      + tag_specifications {
+          + resource_type = "volume"
+          + tags          = {
+              + "Name"                   = "multi-runner-linux-arm64-action-runner"
+              + "Project"                = "ProjectX"
+              + "ghr:environment"        = "multi-runner-linux-arm64"
+              + "ghr:runner_name_prefix" = "amazon-arm64_"
+              + "ghr:ssm_config_path"    = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_security_group.runner_sg[0] will be created
+  + resource "aws_security_group" "runner_sg" {
+      + arn                    = (known after apply)
+      + description            = "Github Actions Runner security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 0
+              + ipv6_cidr_blocks = [
+                  + "::/0",
+                ]
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = "multi-runner-linux-arm64-github-actions-runner-sg"
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all               = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_ssm_parameter.cloudwatch_agent_config_runner[0] will be created
+  + resource "aws_ssm_parameter" "cloudwatch_agent_config_runner" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-arm64/runners/config/cloudwatch_agent_config_runner"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_ssm_parameter.jit_config_enabled will be created
+  + resource "aws_ssm_parameter" "jit_config_enabled" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-arm64/runners/config/enable_jit_config"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_ssm_parameter.runner_agent_mode will be created
+  + resource "aws_ssm_parameter" "runner_agent_mode" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-arm64/runners/config/agent_mode"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_ssm_parameter.runner_config_run_as will be created
+  + resource "aws_ssm_parameter" "runner_config_run_as" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-arm64/runners/config/run_as"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_ssm_parameter.runner_enable_cloudwatch will be created
+  + resource "aws_ssm_parameter" "runner_enable_cloudwatch" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-arm64/runners/config/enable_cloudwatch"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-arm64"].aws_ssm_parameter.token_path will be created
+  + resource "aws_ssm_parameter" "token_path" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-arm64/runners/config/token_path"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-arm64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-arm64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-arm64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_event_rule.scale_down will be created
+  + resource "aws_cloudwatch_event_rule" "scale_down" {
+      + arn                 = (known after apply)
+      + event_bus_name      = "default"
+      + id                  = (known after apply)
+      + is_enabled          = true
+      + name                = "multi-runner-linux-x64-scale-down-rule"
+      + name_prefix         = (known after apply)
+      + schedule_expression = "cron(* * * * ? *)"
+      + tags                = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-x64"
+        }
+      + tags_all            = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-x64"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_event_target.scale_down will be created
+  + resource "aws_cloudwatch_event_target" "scale_down" {
+      + arn            = (known after apply)
+      + event_bus_name = "default"
+      + id             = (known after apply)
+      + rule           = "multi-runner-linux-x64-scale-down-rule"
+      + target_id      = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_log_group.gh_runners[0] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-x64/messages"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_log_group.gh_runners[1] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-x64/user_data"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_log_group.gh_runners[2] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-x64/runner"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_log_group.gh_runners[3] will be created
+  + resource "aws_cloudwatch_log_group" "gh_runners" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/github-self-hosted-runners/multi-runner-linux-x64/runner-startup"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all          = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_log_group.scale_down will be created
+  + resource "aws_cloudwatch_log_group" "scale_down" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/aws/lambda/multi-runner-linux-x64-scale-down"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-x64"
+        }
+      + tags_all          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-x64"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_cloudwatch_log_group.scale_up will be created
+  + resource "aws_cloudwatch_log_group" "scale_up" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/aws/lambda/multi-runner-linux-x64-scale-up"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-x64"
+        }
+      + tags_all          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner-linux-x64"
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_instance_profile.runner will be created
+  + resource "aws_iam_instance_profile" "runner" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "multi-runner-linux-x64-runner-profile"
+      + name_prefix = (known after apply)
+      + path        = "/multi-runner-linux-x64/"
+      + role        = "multi-runner-linux-x64-runner-role"
+      + tags_all    = (known after apply)
+      + unique_id   = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role.runner will be created
+  + resource "aws_iam_role" "runner" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                      + Sid       = ""
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-x64-runner-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-x64/"
+      + tags                  = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all              = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role.scale_down will be created
+  + resource "aws_iam_role" "scale_down" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-x64-action-scale-down-lambda-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-x64/"
+      + tags                  = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all              = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role.scale_up will be created
+  + resource "aws_iam_role" "scale_up" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-linux-x64-action-scale-up-lambda-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner-linux-x64/"
+      + tags                  = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all              = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.cloudwatch[0] will be created
+  + resource "aws_iam_role_policy" "cloudwatch" {
+      + id     = (known after apply)
+      + name   = "CloudWatchLogginAndMetrics"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-x64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.describe_tags will be created
+  + resource "aws_iam_role_policy" "describe_tags" {
+      + id     = (known after apply)
+      + name   = "runner-describe-tags"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "ec2:DescribeTags"
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-x64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.dist_bucket[0] will be created
+  + resource "aws_iam_role_policy" "dist_bucket" {
+      + id     = (known after apply)
+      + name   = "distribution-bucket"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-x64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.ec2 will be created
+  + resource "aws_iam_role_policy" "ec2" {
+      + id     = (known after apply)
+      + name   = "ec2"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "ec2:TerminateInstances"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:ARN" = "${ec2:SourceInstanceARN}"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-x64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.runner_session_manager_aws_managed[0] will be created
+  + resource "aws_iam_role_policy" "runner_session_manager_aws_managed" {
+      + id     = (known after apply)
+      + name   = "runner-ssm-session"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ssm:DescribeAssociation",
+                          + "ssm:GetDeployablePatchSnapshotForInstance",
+                          + "ssm:GetDocument",
+                          + "ssm:DescribeDocument",
+                          + "ssm:GetManifest",
+                          + "ssm:ListAssociations",
+                          + "ssm:ListInstanceAssociations",
+                          + "ssm:PutInventory",
+                          + "ssm:PutComplianceItems",
+                          + "ssm:PutConfigurePackageResult",
+                          + "ssm:UpdateAssociationStatus",
+                          + "ssm:UpdateInstanceAssociationStatus",
+                          + "ssm:UpdateInstanceInformation",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ssmmessages:CreateControlChannel",
+                          + "ssmmessages:CreateDataChannel",
+                          + "ssmmessages:OpenControlChannel",
+                          + "ssmmessages:OpenDataChannel",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ec2messages:AcknowledgeMessage",
+                          + "ec2messages:DeleteMessage",
+                          + "ec2messages:FailMessage",
+                          + "ec2messages:GetEndpoint",
+                          + "ec2messages:GetMessages",
+                          + "ec2messages:SendReply",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-x64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.scale_down will be created
+  + resource "aws_iam_role_policy" "scale_down" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-x64-lambda-scale-down-policy"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-x64-action-scale-down-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.scale_down_logging will be created
+  + resource "aws_iam_role_policy" "scale_down_logging" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-x64-lambda-logging"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-x64-action-scale-down-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.scale_up will be created
+  + resource "aws_iam_role_policy" "scale_up" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-x64-lambda-scale-up-policy"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-x64-action-scale-up-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.scale_up_logging will be created
+  + resource "aws_iam_role_policy" "scale_up_logging" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-x64-lambda-logging"
+      + policy = (known after apply)
+      + role   = "multi-runner-linux-x64-action-scale-up-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.service_linked_role[0] will be created
+  + resource "aws_iam_role_policy" "service_linked_role" {
+      + id     = (known after apply)
+      + name   = "multi-runner-linux-x64-service_linked_role"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "iam:CreateServiceLinkedRole"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:iam::*:role/aws-service-role/*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-x64-action-scale-up-lambda-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_iam_role_policy.ssm_parameters will be created
+  + resource "aws_iam_role_policy" "ssm_parameters" {
+      + id     = (known after apply)
+      + name   = "runner-ssm-parameters"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ssm:DeleteParameter",
+                          + "ssm:GetParameters",
+                          + "ssm:GetParameter",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:ssm:us-east-2:315812372544:parameter/github-action-runners/multi-runner/linux-x64/runners/tokens*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ssm:GetParameter",
+                          + "ssm:GetParameters",
+                          + "ssm:GetParametersByPath",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:ssm:us-east-2:315812372544:parameter/github-action-runners/multi-runner/linux-x64/runners/config",
+                          + "arn:aws:ssm:us-east-2:315812372544:parameter/github-action-runners/multi-runner/linux-x64/runners/config/*",
+                        ]
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = "multi-runner-linux-x64-runner-role"
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_lambda_event_source_mapping.scale_up will be created
+  + resource "aws_lambda_event_source_mapping" "scale_up" {
+      + batch_size                    = 1
+      + enabled                       = true
+      + event_source_arn              = (known after apply)
+      + function_arn                  = (known after apply)
+      + function_name                 = (known after apply)
+      + id                            = (known after apply)
+      + last_modified                 = (known after apply)
+      + last_processing_result        = (known after apply)
+      + maximum_record_age_in_seconds = (known after apply)
+      + maximum_retry_attempts        = (known after apply)
+      + parallelization_factor        = (known after apply)
+      + state                         = (known after apply)
+      + state_transition_reason       = (known after apply)
+      + uuid                          = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_lambda_function.scale_down will be created
+  + resource "aws_lambda_function" "scale_down" {
+      + architectures                  = [
+          + "arm64",
+        ]
+      + arn                            = (known after apply)
+      + filename                       = "../lambdas-download/runners.zip"
+      + function_name                  = "multi-runner-linux-x64-scale-down"
+      + handler                        = "index.scaleDownHandler"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 512
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs18.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "y6BUv+kEaqpnaSmQEsi43eHYjVr53B16mZlwL7WDBhM="
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all                       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + timeout                        = 60
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = {
+              + "ENVIRONMENT"                          = "multi-runner-linux-x64"
+              + "LOG_LEVEL"                            = "debug"
+              + "MINIMUM_RUNNING_TIME_IN_MINUTES"      = "5"
+              + "NODE_TLS_REJECT_UNAUTHORIZED"         = "1"
+              + "PARAMETER_GITHUB_APP_ID_NAME"         = "/github-action-runners/multi-runner/app/github_app_id"
+              + "PARAMETER_GITHUB_APP_KEY_BASE64_NAME" = "/github-action-runners/multi-runner/app/github_app_key_base64"
+              + "POWERTOOLS_LOGGER_LOG_EVENT"          = "true"
+              + "RUNNER_BOOT_TIME_IN_MINUTES"          = "5"
+              + "SCALE_DOWN_CONFIG"                    = jsonencode([])
+              + "SERVICE_NAME"                         = "runners-scale-down"
+            }
+        }
+
+      + vpc_config {
+          + vpc_id = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_lambda_function.scale_up will be created
+  + resource "aws_lambda_function" "scale_up" {
+      + architectures                  = [
+          + "arm64",
+        ]
+      + arn                            = (known after apply)
+      + filename                       = "../lambdas-download/runners.zip"
+      + function_name                  = "multi-runner-linux-x64-scale-up"
+      + handler                        = "index.scaleUpHandler"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 512
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = 1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs18.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "y6BUv+kEaqpnaSmQEsi43eHYjVr53B16mZlwL7WDBhM="
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all                       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + timeout                        = 60
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = (known after apply)
+        }
+
+      + vpc_config {
+          + vpc_id = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_lambda_permission.scale_down will be created
+  + resource "aws_lambda_permission" "scale_down" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "multi-runner-linux-x64-scale-down"
+      + id                  = (known after apply)
+      + principal           = "events.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromCloudWatch"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_lambda_permission.scale_runners_lambda will be created
+  + resource "aws_lambda_permission" "scale_runners_lambda" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "multi-runner-linux-x64-scale-up"
+      + id                  = (known after apply)
+      + principal           = "sqs.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromSQS"
+      + statement_id_prefix = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_launch_template.runner will be created
+  + resource "aws_launch_template" "runner" {
+      + arn                                  = (known after apply)
+      + default_version                      = (known after apply)
+      + ebs_optimized                        = "false"
+      + id                                   = (known after apply)
+      + image_id                             = "ami-0a0d9cf81c479446a"
+      + instance_initiated_shutdown_behavior = "terminate"
+      + latest_version                       = (known after apply)
+      + name                                 = "multi-runner-linux-x64-action-runner"
+      + name_prefix                          = (known after apply)
+      + tags                                 = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all                             = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + update_default_version               = true
+      + user_data                            = (known after apply)
+      + vpc_security_group_ids               = (known after apply)
+
+      + block_device_mappings {
+          + device_name = "/dev/xvda"
+
+          + ebs {
+              + delete_on_termination = "true"
+              + encrypted             = "true"
+              + iops                  = (known after apply)
+              + throughput            = (known after apply)
+              + volume_size           = 30
+              + volume_type           = "gp3"
+            }
+        }
+
+      + credit_specification {
+          + cpu_credits = "standard"
+        }
+
+      + iam_instance_profile {
+          + name = "multi-runner-linux-x64-runner-profile"
+        }
+
+      + metadata_options {
+          + http_endpoint               = "enabled"
+          + http_protocol_ipv6          = (known after apply)
+          + http_put_response_hop_limit = 1
+          + http_tokens                 = "optional"
+          + instance_metadata_tags      = "disabled"
+        }
+
+      + monitoring {
+          + enabled = false
+        }
+
+      + tag_specifications {
+          + resource_type = "instance"
+          + tags          = {
+              + "Name"                   = "multi-runner-linux-x64-action-runner"
+              + "Project"                = "ProjectX"
+              + "ghr:environment"        = "multi-runner-linux-x64"
+              + "ghr:runner_name_prefix" = "amazon-x64_"
+              + "ghr:ssm_config_path"    = "/github-action-runners/multi-runner/linux-x64/runners/config"
+            }
+        }
+      + tag_specifications {
+          + resource_type = "volume"
+          + tags          = {
+              + "Name"                   = "multi-runner-linux-x64-action-runner"
+              + "Project"                = "ProjectX"
+              + "ghr:environment"        = "multi-runner-linux-x64"
+              + "ghr:runner_name_prefix" = "amazon-x64_"
+              + "ghr:ssm_config_path"    = "/github-action-runners/multi-runner/linux-x64/runners/config"
+            }
+        }
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_security_group.runner_sg[0] will be created
+  + resource "aws_security_group" "runner_sg" {
+      + arn                    = (known after apply)
+      + description            = "Github Actions Runner security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 0
+              + ipv6_cidr_blocks = [
+                  + "::/0",
+                ]
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = "multi-runner-linux-x64-github-actions-runner-sg"
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all               = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_ssm_parameter.cloudwatch_agent_config_runner[0] will be created
+  + resource "aws_ssm_parameter" "cloudwatch_agent_config_runner" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-x64/runners/config/cloudwatch_agent_config_runner"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_ssm_parameter.jit_config_enabled will be created
+  + resource "aws_ssm_parameter" "jit_config_enabled" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-x64/runners/config/enable_jit_config"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_ssm_parameter.runner_agent_mode will be created
+  + resource "aws_ssm_parameter" "runner_agent_mode" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-x64/runners/config/agent_mode"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_ssm_parameter.runner_config_run_as will be created
+  + resource "aws_ssm_parameter" "runner_config_run_as" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-x64/runners/config/run_as"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_ssm_parameter.runner_enable_cloudwatch will be created
+  + resource "aws_ssm_parameter" "runner_enable_cloudwatch" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-x64/runners/config/enable_cloudwatch"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.runners["linux-x64"].aws_ssm_parameter.token_path will be created
+  + resource "aws_ssm_parameter" "token_path" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "/github-action-runners/multi-runner/linux-x64/runners/config/token_path"
+      + tags           = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tags_all       = {
+          + "Name"                = "multi-runner-linux-x64-action-runner"
+          + "Project"             = "ProjectX"
+          + "ghr:environment"     = "multi-runner-linux-x64"
+          + "ghr:ssm_config_path" = "/github-action-runners/multi-runner/linux-x64/runners/config"
+        }
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.ssm.aws_ssm_parameter.github_app_id will be created
+  + resource "aws_ssm_parameter" "github_app_id" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = "alias/aws/ssm"
+      + name           = "/github-action-runners/multi-runner/app/github_app_id"
+      + tags           = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all       = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.ssm.aws_ssm_parameter.github_app_key_base64 will be created
+  + resource "aws_ssm_parameter" "github_app_key_base64" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = "alias/aws/ssm"
+      + name           = "/github-action-runners/multi-runner/app/github_app_key_base64"
+      + tags           = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all       = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.ssm.aws_ssm_parameter.github_app_webhook_secret will be created
+  + resource "aws_ssm_parameter" "github_app_webhook_secret" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = "alias/aws/ssm"
+      + name           = "/github-action-runners/multi-runner/app/github_app_webhook_secret"
+      + tags           = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all       = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.multi-runner.module.webhook.aws_apigatewayv2_api.webhook will be created
+  + resource "aws_apigatewayv2_api" "webhook" {
+      + api_endpoint                 = (known after apply)
+      + api_key_selection_expression = "$request.header.x-api-key"
+      + arn                          = (known after apply)
+      + execution_arn                = (known after apply)
+      + id                           = (known after apply)
+      + name                         = "multi-runner-github-action-webhook"
+      + protocol_type                = "HTTP"
+      + route_selection_expression   = "$request.method $request.path"
+      + tags                         = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all                     = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+    }
+
+  # module.multi-runner.module.webhook.aws_apigatewayv2_integration.webhook will be created
+  + resource "aws_apigatewayv2_integration" "webhook" {
+      + api_id                                    = (known after apply)
+      + connection_type                           = "INTERNET"
+      + description                               = "GitHub App webhook for receiving build events."
+      + id                                        = (known after apply)
+      + integration_method                        = "POST"
+      + integration_response_selection_expression = (known after apply)
+      + integration_type                          = "AWS_PROXY"
+      + integration_uri                           = (known after apply)
+      + payload_format_version                    = "1.0"
+      + timeout_milliseconds                      = (known after apply)
+    }
+
+  # module.multi-runner.module.webhook.aws_apigatewayv2_route.webhook will be created
+  + resource "aws_apigatewayv2_route" "webhook" {
+      + api_id             = (known after apply)
+      + api_key_required   = false
+      + authorization_type = "NONE"
+      + id                 = (known after apply)
+      + route_key          = "POST /webhook"
+      + target             = (known after apply)
+    }
+
+  # module.multi-runner.module.webhook.aws_apigatewayv2_stage.webhook will be created
+  + resource "aws_apigatewayv2_stage" "webhook" {
+      + api_id        = (known after apply)
+      + arn           = (known after apply)
+      + auto_deploy   = true
+      + deployment_id = (known after apply)
+      + execution_arn = (known after apply)
+      + id            = (known after apply)
+      + invoke_url    = (known after apply)
+      + name          = "$default"
+      + tags          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all      = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+    }
+
+  # module.multi-runner.module.webhook.aws_cloudwatch_log_group.webhook will be created
+  + resource "aws_cloudwatch_log_group" "webhook" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + name              = "/aws/lambda/multi-runner-webhook"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 180
+      + skip_destroy      = false
+      + tags              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all          = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+    }
+
+  # module.multi-runner.module.webhook.aws_iam_role.webhook_lambda will be created
+  + resource "aws_iam_role" "webhook_lambda" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "multi-runner-action-webhook-lambda-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/multi-runner/"
+      + tags                  = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all              = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.multi-runner.module.webhook.aws_iam_role_policy.webhook_logging will be created
+  + resource "aws_iam_role_policy" "webhook_logging" {
+      + id     = (known after apply)
+      + name   = "multi-runner-lambda-logging-policy"
+      + policy = (known after apply)
+      + role   = "multi-runner-action-webhook-lambda-role"
+    }
+
+  # module.multi-runner.module.webhook.aws_iam_role_policy.webhook_sqs will be created
+  + resource "aws_iam_role_policy" "webhook_sqs" {
+      + id     = (known after apply)
+      + name   = "multi-runner-lambda-webhook-publish-sqs-policy"
+      + policy = (known after apply)
+      + role   = "multi-runner-action-webhook-lambda-role"
+    }
+
+  # module.multi-runner.module.webhook.aws_iam_role_policy.webhook_ssm will be created
+  + resource "aws_iam_role_policy" "webhook_ssm" {
+      + id     = (known after apply)
+      + name   = "multi-runner-lambda-webhook-publish-ssm-policy"
+      + policy = (known after apply)
+      + role   = "multi-runner-action-webhook-lambda-role"
+    }
+
+  # module.multi-runner.module.webhook.aws_lambda_function.webhook will be created
+  + resource "aws_lambda_function" "webhook" {
+      + architectures                  = [
+          + "arm64",
+        ]
+      + arn                            = (known after apply)
+      + filename                       = "../lambdas-download/webhook.zip"
+      + function_name                  = "multi-runner-webhook"
+      + handler                        = "index.githubWebhook"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 128
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "nodejs18.x"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "F7lAbT9LvzIKqzoXIqEvGwd23iIekBcbHmR5xOdfY4I="
+      + source_code_size               = (known after apply)
+      + tags                           = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + tags_all                       = {
+          + "Project"         = "ProjectX"
+          + "ghr:environment" = "multi-runner"
+        }
+      + timeout                        = 10
+      + version                        = (known after apply)
+
+      + environment {
+          + variables = (known after apply)
+        }
+
+      + vpc_config {
+          + vpc_id = (known after apply)
+        }
+    }
+
+  # module.multi-runner.module.webhook.aws_lambda_permission.webhook will be created
+  + resource "aws_lambda_permission" "webhook" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "multi-runner-webhook"
+      + id                  = (known after apply)
+      + principal           = "apigateway.amazonaws.com"
+      + source_arn          = (known after apply)
+      + statement_id        = "AllowExecutionFromAPIGateway"
+      + statement_id_prefix = (known after apply)
+    }
+
+Plan: 149 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + webhook_endpoint = (known after apply)
+  + webhook_secret   = (sensitive value)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value:
