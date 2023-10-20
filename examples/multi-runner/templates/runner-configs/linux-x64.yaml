@@ -12,16 +12,40 @@ runner_config:
   runner_architecture: x64
   runner_extra_labels: amazon
   runner_name_prefix: amazon-x64_
+  runner_run_as: ubuntu # NOTE(ywen): Used to log in the EC2 instance
   enable_ssm_on_runners: true
+  # TODO(ywen): What is `credit_specification`?
+  # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
   credit_specification: standard
+  # ami_owners:
+  #   - "amazon"
+  ami_filter:
+    name:
+      - ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20230907
+    state:
+      - available
   instance_types:
     - t2.micro
   runners_maximum_count: 1
   enable_ephemeral_runners: false
   create_service_linked_role_spot: true
-  scale_down_schedule_expression: cron(* * * * ? *)
+  # scale_down_schedule_expression: cron(* * * * ? *)
+  userdata_template: ./templates/user-data.sh
   runner_metadata_options:
     instance_metadata_tags: disabled
     http_endpoint: enabled
     http_tokens: optional
     http_put_response_hop_limit: 1
+  runner_log_files:
+    - log_group_name: syslog
+      prefix_log_group: true
+      file_path: /var/log/syslog
+      log_stream_name: "{instance_id}"
+    - log_group_name: user_data
+      prefix_log_group: true
+      file_path: /var/log/user-data.log
+      log_stream_name: "{instance_id}/user_data"
+    - log_group_name: runner
+      prefix_log_group: true
+      file_path: /opt/actions-runner/_diag/Runner_**.log
+      log_stream_name: "{instance_id}/runner"
