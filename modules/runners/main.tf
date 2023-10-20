@@ -45,6 +45,10 @@ locals {
   arn_ssm_parameters_path_config = "arn:${var.aws_partition}:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_paths.root}/${var.ssm_paths.config}"
 }
 
+# NOTE(ywen): If the filters result in multiple AMIs, this seems to only pick
+# one of them? Yes, see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami
+# most_recent - (Optional) If more than one result is returned, use the most
+# recent AMI.
 data "aws_ami" "runner" {
   most_recent = "true"
 
