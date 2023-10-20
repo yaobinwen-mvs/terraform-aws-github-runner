@@ -78,7 +78,7 @@ Secrets and private keys are stored in SSM Parameter Store. These values are enc
 
 Permission are managed in several places. Below are the most important ones. For details check the Terraform sources.
 
-- The GitHub App requires access to actions and to publish `workflow_job` events to the AWS webhook (API gateway).
+- The GitHub App requires access to actions to publish `workflow_job` events to the AWS webhook (API gateway).
 - The scale up lambda should have access to EC2 for creating and tagging instances.
 - The scale down lambda should have access to EC2 to terminate instances.
 
@@ -238,7 +238,7 @@ Go back to the GitHub App and update the following settings.
 1. Enable the webhook.
 2. Provide the webhook url, should be part of the output of terraform.
 3. Provide the webhook secret (`terraform output -raw <NAME_OUTPUT_VAR>`).
-4. In the "Permissions & Events" section and then "Subscribe to Events" subsection, check either "Workflow Job" or "Check Run" (choose only one option!!!).
+4. In the "Permissions & Events" section and then "Subscribe to Events" subsection, check either ["Workflow Job"](https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_job) or ["Check Run"](https://docs.github.com/en/webhooks/webhook-events-and-payloads#check_run) (choose **only one** option!!!).
 
 #### Install app
 
