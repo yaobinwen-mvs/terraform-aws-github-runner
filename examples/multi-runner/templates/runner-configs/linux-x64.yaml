@@ -1,20 +1,23 @@
 matcherConfig:
-  exactMatch: false
+  exactMatch: true
   labelMatchers:
-    - [ self-hosted, linux, x64, amazon ]
+    - [self-hosted, linux, x64, amazon]
 fifo: true
-delay_webhook_event: 0
+delay_webhook_event: 15
+redrive_build_queue:
+  enabled: false
+  maxReceiveCount: null
 runner_config:
   runner_os: linux
   runner_architecture: x64
   runner_extra_labels: amazon
   runner_name_prefix: amazon-x64_
   enable_ssm_on_runners: true
+  credit_specification: standard
   instance_types:
-    - m5ad.large
-    - m5a.large
+    - t2.micro
   runners_maximum_count: 1
-  enable_ephemeral_runners: true
+  enable_ephemeral_runners: false
   create_service_linked_role_spot: true
   scale_down_schedule_expression: cron(* * * * ? *)
   runner_metadata_options:

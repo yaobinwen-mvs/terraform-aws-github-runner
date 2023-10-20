@@ -1,6 +1,6 @@
 locals {
   environment = var.environment != null ? var.environment : "multi-runner"
-  aws_region  = "eu-west-1"
+  aws_region  = "us-east-2"
 
   # Load runner configurations from Yaml files
   multi_runner_config = { for c in fileset("${path.module}/templates/runner-configs", "*.yaml") : trimsuffix(c, ".yaml") => yamldecode(file("${path.module}/templates/runner-configs/${c}")) }
@@ -37,15 +37,21 @@ module "multi-runner" {
 
   # Assuming local build lambda's to use pre build ones, uncomment the lines below and download the
   # lambda zip files lambda_download
-  # webhook_lambda_zip                = "../lambdas-download/webhook.zip"
-  # runner_binaries_syncer_lambda_zip = "../lambdas-download/runner-binaries-syncer.zip"
-  # runners_lambda_zip                = "../lambdas-download/runners.zip"
+  webhook_lambda_zip                = "../lambdas-download/webhook.zip"
+  runner_binaries_syncer_lambda_zip = "../lambdas-download/runner-binaries-syncer.zip"
+  runners_lambda_zip                = "../lambdas-download/runners.zip"
 
+  # Per ../../README.md:
+  #
+  # > This queue is an experimental feature to allow you to receive a copy of
+  # > the wokflow_jobs events sent by the GItHub App. For example to calculate
+  # > a matrix or monitor the system.
+  #
+  # NOTE(ywen): I don't think we need to enable it.
   # enable_workflow_job_events_queue = true
-  # override delay of events in seconds
 
   # Enable debug logging for the lambda functions
-  # log_level = "debug"
+  log_level = "debug"
 }
 
 module "webhook-github-app" {

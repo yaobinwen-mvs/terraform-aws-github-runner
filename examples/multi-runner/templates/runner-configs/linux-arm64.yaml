@@ -3,7 +3,7 @@ matcherConfig:
   labelMatchers:
     - [self-hosted, linux, arm64, amazon]
 fifo: true
-delay_webhook_event: 0
+delay_webhook_event: 15
 redrive_build_queue:
   enabled: false
   maxReceiveCount: null
@@ -13,9 +13,15 @@ runner_config:
   runner_extra_labels: amazon
   runner_name_prefix: amazon-arm64_
   enable_ssm_on_runners: true
-  credit_specification: unlimited
+  credit_specification: standard
   instance_types:
-    - t4g.large
-    - c6g.large
+    - t2.micro
   runners_maximum_count: 1
+  enable_ephemeral_runners: false
+  create_service_linked_role_spot: true
   scale_down_schedule_expression: cron(* * * * ? *)
+  runner_metadata_options:
+    instance_metadata_tags: disabled
+    http_endpoint: enabled
+    http_tokens: optional
+    http_put_response_hop_limit: 1
