@@ -1,7 +1,6 @@
 #!/bin/bash
 exec > >(tee /var/log/user-data.log | logger -t user-data -s 2>/dev/console) 2>&1
 
-
 # AWS suggest to create a log for debug purpose based on https://aws.amazon.com/premiumsupport/knowledge-center/ec2-linux-log-user-data/
 # As side effect all command, set +x disable debugging explicitly.
 #
@@ -27,11 +26,12 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y \
     unzip \
     wget
 
+arch=$(dpkg-architecture -q DEB_BUILD_ARCH)
 user_name=ubuntu
 user_id=$(id -ru $user_name)
 
 # install and configure cloudwatch logging agent
-wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+wget "https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/$arch/latest/amazon-cloudwatch-agent.deb"
 dpkg -i -E ./amazon-cloudwatch-agent.deb
 amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c ssm:${ssm_key_cloudwatch_agent_config}
 
