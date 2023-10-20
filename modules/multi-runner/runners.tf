@@ -44,6 +44,8 @@ module "runners" {
   scale_down_schedule_expression       = each.value.runner_config.scale_down_schedule_expression
   minimum_running_time_in_minutes      = each.value.runner_config.minimum_running_time_in_minutes
   runner_boot_time_in_minutes          = each.value.runner_config.runner_boot_time_in_minutes
+
+  # NOTE(ywen): These labels can be used in `jobs.<job_id>.runs-on`.
   runner_labels                        = "self-hosted,${each.value.runner_config.runner_os},${each.value.runner_config.runner_architecture},${each.value.runner_config.runner_extra_labels}"
   runner_as_root                       = each.value.runner_config.runner_as_root
   runner_run_as                        = each.value.runner_config.runner_run_as
