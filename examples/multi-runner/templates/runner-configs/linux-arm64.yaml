@@ -31,6 +31,7 @@ runner_config:
     - t4g.micro
   runners_maximum_count: 1
   enable_ephemeral_runners: false
+  enable_runner_detailed_monitoring: true
   create_service_linked_role_spot: true
   # scale_down_schedule_expression: cron(* * * * ? *)
   userdata_template: ./templates/user-data.sh
