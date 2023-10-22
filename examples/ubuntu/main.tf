@@ -19,7 +19,10 @@ module "runners" {
 
   aws_region = local.aws_region
   vpc_id     = module.base.vpc.vpc_id
-  subnet_ids = module.base.vpc.private_subnets
+
+  # NOTE(ywen): Change these to launch the instances in either private or
+  # public subnets.
+  subnet_ids = module.base.vpc.public_subnets
 
   prefix = local.environment
   tags = {
