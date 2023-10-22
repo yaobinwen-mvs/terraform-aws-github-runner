@@ -63,8 +63,7 @@ module "runners" {
   # https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html
   ami_filter = {
     architecture = ["x86_64"],
-    # image-id = ["ami-00d5c4dd05b5467c4"],
-    name  = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-*-server-20230907"],
+    name  = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-20230531"],
     state = ["available"]
   }
 
