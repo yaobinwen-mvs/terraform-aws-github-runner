@@ -133,26 +133,27 @@ The setup consists of running Terraform to create all AWS resources and manually
 
 ### Setup GitHub App (part 1)
 
-Go to GitHub and [create a new app](https://docs.github.com/en/developers/apps/creating-a-github-app). Be aware you can create apps for your organization or for a user. For now we only support organization level apps.
+Go to GitHub and [create a new app](https://docs.github.com/en/developers/apps/creating-a-github-app). Be aware you can create apps for your organization or for a user. For now we only support organization level apps. (NOTE(ywen): But I tried to use a repo-level GitHub App and succeeded, too.)
 
 1. Create an app in Github
 2. Choose a name
 3. Choose a website (mandatory, not required for the module).
 4. Disable the webhook for now (we will configure this later or create an alternative webhook).
-5. Permissions for all runners:
-    - Repository:
+5. No matter if you are configuring org-level or repo-level runners, grant the following permissions:
+    - Repository permissions:
       - `Actions`: Read-only (check for queued jobs)
       - `Checks`: Read-only (receive events for new builds)
       - `Metadata`: Read-only (default/required)
-6. _Permissions for repo level runners only_:
-   - Repository:
+6. If you are configuring repo level runners, grant the following permissions:
+   - Repository permissions:
      - `Administration`: Read & write (to register runner)
-7. _Permissions for organization level runners only_:
-   - Organization
+7. If you are configuring organization level runners, grant the following permissions:
+   - Organization permissions:
      - `Self-hosted runners`: Read & write (to register runner)
-8. Save the new app.
-9. On the General page, make a note of the "App ID" and "Client ID" parameters.
-10. Generate a new private key and save the `app.private-key.pem` file.
+8. Choose "Only on this account" for "Where can this GitHub App be installed?".
+9. Click "Create GitHub App".
+10. On the General page, make a note of the "App ID" and "Client ID" parameters.
+11. Generate a new private key and save the `app.private-key.pem` file.
 
 ### Setup terraform module
 
